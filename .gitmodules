@@ -1,3 +1,6 @@
 [submodule "cmake"]
 	path = cmake
 	url = git@github.com:nbaiot/third_cmake.git
+[submodule "third/concurrentqueue"]
+	path = third/concurrentqueue
+	url = https://github.com/cameron314/concurrentqueue.git
