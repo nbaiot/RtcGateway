@@ -3,6 +3,7 @@ build
 *build
 .idea
 .vscode
+.clion*
 
 # Prerequisites
 *.d
