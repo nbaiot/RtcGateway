@@ -23,3 +23,5 @@ add_executable(RtcGateway
         main.cpp)
 
 add_dependencies(RtcGateway glog gflags boost_system)
+
+target_link_libraries(RtcGateway glog gflags pthread)
