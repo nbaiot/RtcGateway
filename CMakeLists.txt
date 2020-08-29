@@ -12,16 +12,19 @@ include(cmake/generic.cmake)
 include(cmake/external/gflags.cmake)
 include(cmake/external/glog.cmake)
 include(cmake/external/boost.cmake)
+include(cmake/external/yaml.cmake)
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third/concurrentqueue)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/core/include)
 
 aux_source_directory(core/thread CORE_SRCS)
+aux_source_directory(core/gateway CORE_SRCS)
 
 add_executable(RtcGateway
         ${CORE_SRCS}
         main.cpp)
 
-add_dependencies(RtcGateway glog gflags boost_system)
+add_dependencies(RtcGateway glog gflags boost_system yaml-cpp)
 
 target_link_libraries(RtcGateway glog gflags pthread)
