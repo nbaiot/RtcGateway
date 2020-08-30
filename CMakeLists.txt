@@ -16,10 +16,14 @@ include(cmake/external/yaml.cmake)
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third/concurrentqueue)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/core/include)
+
+add_definitions(-DDEBUG_SIGNALING)
 
 aux_source_directory(core/thread CORE_SRCS)
 aux_source_directory(core/gateway CORE_SRCS)
+aux_source_directory(core/gateway/messenger CORE_SRCS)
 
 add_executable(RtcGateway
         ${CORE_SRCS}
