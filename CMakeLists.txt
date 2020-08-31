@@ -14,8 +14,10 @@ include(cmake/external/glog.cmake)
 include(cmake/external/boost.cmake)
 include(cmake/external/yaml.cmake)
 
-
+# third parth
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third/concurrentqueue)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/third/json/single_include)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/core/include)
 
