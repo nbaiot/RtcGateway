@@ -6,8 +6,8 @@
 
 #include <glog/logging.h>
 
-#include "messenger/websocket_listener.h"
-#include "messenger/websocket_session.h"
+#include "gateway/messenger/websocket_listener.h"
+#include "gateway/messenger/websocket_session.h"
 
 #include "signaling_session.h"
 

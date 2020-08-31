@@ -29,6 +29,7 @@ public:
 
   ~SignalingSession();
 
+  /// 链接断开或者失效
   void SetInvalidCallback(OnSessionInvalid callback);
 
   std::chrono::steady_clock::time_point LastReceiveTimePoint();

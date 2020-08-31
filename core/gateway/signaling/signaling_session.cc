@@ -6,7 +6,7 @@
 
 #include <glog/logging.h>
 
-#include "messenger/websocket_session.h"
+#include "gateway/messenger/websocket_session.h"
 
 namespace nbaiot::rtc {
 

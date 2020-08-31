@@ -26,6 +26,8 @@ add_definitions(-DDEBUG_SIGNALING)
 aux_source_directory(core/thread CORE_SRCS)
 aux_source_directory(core/gateway CORE_SRCS)
 aux_source_directory(core/gateway/messenger CORE_SRCS)
+aux_source_directory(core/gateway/signaling CORE_SRCS)
+aux_source_directory(core/utils CORE_SRCS)
 
 add_executable(RtcGateway
         ${CORE_SRCS}

@@ -6,7 +6,7 @@
 
 #include <glog/logging.h>
 
-#include "signaling_session_manager.h"
+#include "gateway/signaling/signaling_session_manager.h"
 
 namespace nbaiot::rtc {
 
