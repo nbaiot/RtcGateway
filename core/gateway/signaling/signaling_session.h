@@ -20,6 +20,8 @@ struct ClientInfo {
 
 class WebsocketSession;
 
+class SignalingRequestParser;
+
 class SignalingSession : public std::enable_shared_from_this<SignalingSession> {
 
 public:
@@ -37,6 +39,10 @@ public:
   void Close();
 
 private:
+  void InstallWebsocketSessionHandler();
+
+  void InstallRequestParserHandler();
+
   void OnMsgCallback(const std::string& msg);
 
   void UpdateReceiveTimePoint();
@@ -45,6 +51,7 @@ private:
   std::weak_ptr<WebsocketSession> websocket_;
   OnSessionInvalid invalid_callback_;
   std::chrono::steady_clock::time_point last_receive_point_;
+  std::unique_ptr<SignalingRequestParser> request_parser_;
 };
 
 }

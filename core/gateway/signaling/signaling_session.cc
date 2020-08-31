@@ -7,23 +7,14 @@
 #include <glog/logging.h>
 
 #include "gateway/messenger/websocket_session.h"
+#include "signaling_request_parser.h"
 
 namespace nbaiot::rtc {
 
 SignalingSession::SignalingSession(std::weak_ptr<WebsocketSession> session) : websocket_(std::move(session)) {
-  auto ses = websocket_.lock();
-  if (ses) {
-    ses->SetDisconnectCallback([this](){
-      if (invalid_callback_) {
-        invalid_callback_(shared_from_this());
-      }
-    });
-
-    ses->SetReceiveMsgCallback([this](const std::string& msg){
-      OnMsgCallback(msg);
-    });
-  }
-
+  request_parser_ = std::make_unique<SignalingRequestParser>();
+  InstallRequestParserHandler();
+  InstallWebsocketSessionHandler();
   UpdateReceiveTimePoint();
 }
 
@@ -44,6 +35,7 @@ void SignalingSession::SetInvalidCallback(SignalingSession::OnSessionInvalid cal
 
 void SignalingSession::OnMsgCallback(const std::string& msg) {
   UpdateReceiveTimePoint();
+  request_parser_->Parse(msg);
 }
 
 std::chrono::steady_clock::time_point SignalingSession::LastReceiveTimePoint() {
@@ -51,7 +43,7 @@ std::chrono::steady_clock::time_point SignalingSession::LastReceiveTimePoint() {
 }
 
 void SignalingSession::UpdateReceiveTimePoint() {
-  last_receive_point_ =  std::chrono::steady_clock::now();
+  last_receive_point_ = std::chrono::steady_clock::now();
 }
 
 void SignalingSession::Close() {
@@ -59,6 +51,25 @@ void SignalingSession::Close() {
   if (socket) {
     socket->Close();
   }
+}
+
+void SignalingSession::InstallWebsocketSessionHandler() {
+  auto ses = websocket_.lock();
+  if (ses) {
+    ses->SetDisconnectCallback([this]() {
+        if (invalid_callback_) {
+          invalid_callback_(shared_from_this());
+        }
+    });
+
+    ses->SetReceiveMsgCallback([this](const std::string& msg) {
+        OnMsgCallback(msg);
+    });
+  }
+}
+
+void SignalingSession::InstallRequestParserHandler() {
+
 }
 
 
