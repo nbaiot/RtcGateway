@@ -72,5 +72,21 @@ void SignalingSession::InstallRequestParserHandler() {
 
 }
 
+uint64_t SignalingSession::SessionId() {
+  return session_id_;
+}
+
+void SignalingSession::OtherMemberJoinRoom(const std::shared_ptr<Member>& member, const std::shared_ptr<Room>& room) {
+
+}
+
+void SignalingSession::OtherMemberLeaveRoom(const std::shared_ptr<Member>& member, const std::shared_ptr<Room>& room) {
+
+}
+
+void SignalingSession::RoomDestroy(const std::shared_ptr<Room>& room) {
+
+}
+
 
 }

@@ -11,7 +11,7 @@
 namespace nbaiot::rtc {
 
 RtcGateway::RtcGateway() {
-  signaling_manager_ = std::make_shared<SignalingSessionManager>();
+
 }
 
 RtcGateway::~RtcGateway() {
@@ -19,7 +19,7 @@ RtcGateway::~RtcGateway() {
 }
 
 bool RtcGateway::Init(const YAML::Node& config) {
-  signaling_manager_->Init("0.0.0.0", 9080);
+  SignalingSessionManager::Instance()->Init("0.0.0.0", 9080);
   return true;
 }
 

@@ -18,6 +18,10 @@ struct ClientInfo {
 
 };
 
+class Room;
+
+class Member;
+
 class WebsocketSession;
 
 class SignalingRequestParser;
@@ -38,6 +42,18 @@ public:
 
   void Close();
 
+  uint64_t SessionId();
+
+  /// Event
+  void OtherMemberJoinRoom(const std::shared_ptr<Member>& member,
+                           const std::shared_ptr<Room>& room);
+
+  void OtherMemberLeaveRoom(const std::shared_ptr<Member>& member,
+                            const std::shared_ptr<Room>& room);
+
+  void RoomDestroy(const std::shared_ptr<Room>& room);
+
+
 private:
   void InstallWebsocketSessionHandler();
 
@@ -48,6 +64,7 @@ private:
   void UpdateReceiveTimePoint();
 
 private:
+  uint64_t session_id_{0};
   std::weak_ptr<WebsocketSession> websocket_;
   OnSessionInvalid invalid_callback_;
   std::chrono::steady_clock::time_point last_receive_point_;

@@ -16,6 +16,7 @@ namespace nbaiot::rtc {
 bool SignalingRequestParser::Parse(const std::string& msg) {
   try {
     auto js = json::parse(msg);
+
   } catch (std::exception& e) {
     LOG(ERROR) << "parse msg:" << msg << "\n"
                << "error:" << e.what();

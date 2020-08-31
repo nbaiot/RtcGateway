@@ -12,7 +12,6 @@ namespace nbaiot::rtc {
 class SignalingRequestParser {
 
 public:
-
   bool Parse(const std::string& msg);
 
 };

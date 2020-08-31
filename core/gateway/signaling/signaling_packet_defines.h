@@ -15,6 +15,10 @@ namespace nbaiot::rtc {
 
 #define DATA "data"
 
+#define CREATE_SESSION "create_session"
+
+#define DESTROY_SESSION "destroy_session"
+
 #define CREATE_ROOM "create_room"
 
 #define DESTROY_ROOM "destroy_room"

@@ -24,13 +24,20 @@ class WebsocketSession;
 class SignalingSessionManager {
 
 public:
+  static SignalingSessionManager* Instance();
+
+  bool Init(const std::string& ip, uint16_t port);
+
+  void Dispose();
+
+  std::shared_ptr<SignalingSession> FindSession(uint64_t sessionId);
+
+
+private:
   SignalingSessionManager();
 
   ~SignalingSessionManager();
 
-  bool Init(const std::string& ip, uint16_t port);
-
-private:
   void OnNewSession(std::weak_ptr<WebsocketSession> session);
 
   void OnSessionInvalid(const std::shared_ptr<SignalingSession>& session);

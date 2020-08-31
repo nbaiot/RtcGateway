@@ -11,8 +11,6 @@
 
 namespace nbaiot::rtc {
 
-class SignalingSessionManager;
-
 class RtcGateway : public GatewayInterface {
 
 public:
@@ -32,8 +30,6 @@ public:
 
   void Restart() override;
 
-private:
-  std::shared_ptr<SignalingSessionManager> signaling_manager_;
 };
 
 }
