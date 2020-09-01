@@ -5,13 +5,19 @@
 #ifndef RTCGATEWAY_SIGNALING_SESSION_H
 #define RTCGATEWAY_SIGNALING_SESSION_H
 
+#include <atomic>
 #include <memory>
 #include <string>
 #include <chrono>
-
 #include <functional>
 
-namespace nbaiot::rtc {
+#include <nlohmann/json.hpp>
+
+namespace nbaiot {
+
+class Worker;
+
+namespace rtc {
 
 /// TODO:
 struct ClientInfo {
@@ -44,6 +50,8 @@ public:
 
   uint64_t SessionId();
 
+  bool Invalid();
+
   /// Event
   void OtherMemberJoinRoom(const std::shared_ptr<Member>& member,
                            const std::shared_ptr<Room>& room);
@@ -55,23 +63,47 @@ public:
 
 
 private:
-  void InstallWebsocketSessionHandler();
+  std::function<void()> SafeTask(const std::function<void(std::shared_ptr<SignalingSession>)>& func);
 
-  void InstallRequestParserHandler();
+  void ClearSession();
+
+  void InstallWebsocketSessionHandler();
 
   void OnMsgCallback(const std::string& msg);
 
   void UpdateReceiveTimePoint();
 
+  /// process request
+  void OnCreateSession(const std::string& transId, const nlohmann::json& body);
+
+  void OnDestroySession(const std::string& transId, const nlohmann::json& body);
+
+  void OnCreateRoom(const std::string& transId, const nlohmann::json& body);
+
+  void OnDestroyRoom(const std::string& transId, const nlohmann::json& body);
+
+  void OnExistsRoom(const std::string& transId, const nlohmann::json& body);
+
+  void OnListRoom(const std::string& transId, const nlohmann::json& body);
+
+  void OnJoinRoom(const std::string& transId, const nlohmann::json& body);
+
+  void OnLeaveRoom(const std::string& transId, const nlohmann::json& body);
+
+  friend class SignalingRequestParser;
+
 private:
-  uint64_t session_id_{0};
+  std::atomic_uint64_t session_id_{0};
+  std::atomic_uint32_t joined_room_id_{0};
   std::weak_ptr<WebsocketSession> websocket_;
   OnSessionInvalid invalid_callback_;
   std::chrono::steady_clock::time_point last_receive_point_;
   std::unique_ptr<SignalingRequestParser> request_parser_;
+  std::shared_ptr<Worker> worker_;
 };
 
 }
 
+}
 
 #endif //RTCGATEWAY_SIGNALING_SESSION_H

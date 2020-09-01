@@ -12,13 +12,20 @@
 #include <shared_mutex>
 #include <unordered_set>
 
-#include "thread/worker.h"
-#include "thread/scheduler.h"
+namespace nbaiot {
 
-namespace nbaiot::rtc {
+class Worker;
+
+class Scheduler;
+
+class ThreadPool;
+
+namespace rtc {
 
 class WebsocketListener;
+
 class SignalingSession;
+
 class WebsocketSession;
 
 class SignalingSessionManager {
@@ -27,8 +34,6 @@ public:
   static SignalingSessionManager* Instance();
 
   bool Init(const std::string& ip, uint16_t port);
-
-  void Dispose();
 
   std::shared_ptr<SignalingSession> FindSession(uint64_t sessionId);
 
@@ -40,7 +45,7 @@ private:
 
   void OnNewSession(std::weak_ptr<WebsocketSession> session);
 
-  void OnSessionInvalid(const std::shared_ptr<SignalingSession>& session);
+  void OnSessionDisconnect(const std::shared_ptr<SignalingSession>& session);
 
   static bool WhetherHealth(const std::shared_ptr<SignalingSession>& session);
 
@@ -52,12 +57,13 @@ private:
   using WriteLock = std::unique_lock<std::shared_mutex>;
   std::shared_mutex set_mutex_;
   std::unordered_set<std::shared_ptr<SignalingSession>> sessions_;
-
   std::shared_ptr<Scheduler> scheduler_;
-  std::shared_ptr<Worker> worker_;
+  std::shared_ptr<Worker> health_worker_;
 
 
 };
+
+}
 
 }
 

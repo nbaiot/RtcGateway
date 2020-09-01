@@ -50,6 +50,18 @@ void Room::RemoveMember(const std::string& uid) {
   }
 }
 
+void Room::RemoveMember(uint64_t sessionId) {
+  WriteLock lk(member_mutex_);
+  std::unordered_map<std::string, std::shared_ptr<Member>>::iterator it;
+  for (it = members_.begin(); it != members_.end();) {
+    if (it->second->SessionId() == sessionId) {
+      it = members_.erase(it);
+    } else {
+      it++;
+    }
+  }
+}
+
 std::shared_ptr<Member> Room::FindMember(const std::string& uid) {
   ReadLock lk(member_mutex_);
   return members_[uid];
@@ -60,5 +72,14 @@ bool Room::NoMember() {
   return members_.empty();
 }
 
+void Room::EachMember(const std::function<bool(std::shared_ptr<Member>& member)>& func) {
+  ReadLock lk(member_mutex_);
+  for (auto & it: members_) {
+    if (func) {
+      if (!func(it.second))
+        return;
+    }
+  }
+}
 
 }

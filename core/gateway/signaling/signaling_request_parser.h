@@ -9,11 +9,17 @@
 
 namespace nbaiot::rtc {
 
+class SignalingSession;
+
 class SignalingRequestParser {
 
 public:
+  explicit SignalingRequestParser(SignalingSession* session);
+
   bool Parse(const std::string& msg);
 
+private:
+  SignalingSession* session_;
 };
 
 }

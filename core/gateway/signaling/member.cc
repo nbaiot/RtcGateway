@@ -23,6 +23,10 @@ std::string Member::Uid() {
   return uid_;
 }
 
+uint64_t Member::SessionId() {
+  return session_id_;
+}
+
 void Member::OtherMemberJoinRoom(const std::shared_ptr<Member>& member, const std::shared_ptr<Room>& room) {
   auto session = SignalingSessionManager::Instance()->FindSession(session_id_);
   if (session) {
@@ -50,13 +54,6 @@ void Member::SetRoomId(uint32_t roomId) {
 
 uint32_t Member::RoomId() {
   return room_id_;
-}
-
-void Member::OnSessionInvalid() {
-  auto room = RoomManager::Instance()->FindRoom(room_id_);
-  if (room) {
-    room->RemoveMember(uid_);
-  }
 }
 
 }

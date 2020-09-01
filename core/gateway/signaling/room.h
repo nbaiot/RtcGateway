@@ -7,6 +7,7 @@
 
 #include <string>
 #include <memory>
+#include <functional>
 #include <shared_mutex>
 #include <unordered_map>
 #include "member.h"
@@ -28,7 +29,11 @@ public:
 
   void RemoveMember(const std::string& uid);
 
+  void RemoveMember(uint64_t sessionId);
+
   std::shared_ptr<Member> FindMember(const std::string& uid);
+
+  void EachMember(const std::function<bool(std::shared_ptr<Member>& member)>& func);
 
   bool NoMember();
 

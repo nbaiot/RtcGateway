@@ -8,7 +8,9 @@
 
 #include "gateway/messenger/websocket_listener.h"
 #include "gateway/messenger/websocket_session.h"
-
+#include "thread/thread_pool.h"
+#include "thread/worker.h"
+#include "thread/scheduler.h"
 #include "signaling_session.h"
 
 namespace nbaiot::rtc {
@@ -31,8 +33,8 @@ bool SignalingSessionManager::Init(const std::string& ip, uint16_t port) {
 
   socket_listener_ = std::make_shared<WebsocketListener>(2);
   scheduler_ = std::make_shared<Scheduler>(2);
-  worker_ = std::make_shared<Worker>(scheduler_);
-  worker_->Start();
+  health_worker_ = std::make_shared<Worker>(scheduler_);
+  health_worker_->Start();
 
   if (!socket_listener_->Init(ip, port)) {
     LOG(ERROR) << "RtcGateway socket listener failed";
@@ -50,32 +52,24 @@ bool SignalingSessionManager::Init(const std::string& ip, uint16_t port) {
   return init_;
 }
 
-void SignalingSessionManager::Dispose() {
-  worker_->Stop();
-  scheduler_->Stop();
-
-  if (socket_listener_) {
-    socket_listener_->SetOnNewConnectionCallback(nullptr);
-    socket_listener_->SetErrorCallback(nullptr);
-  }
-}
-
 void SignalingSessionManager::OnNewSession(std::weak_ptr<WebsocketSession> session) {
 #if DEBUG_SIGNALING
   LOG(INFO) << ">>>>>>>>>>>>new session";
 #endif
   auto signalingSession = std::make_shared<SignalingSession>(std::move(session));
   signalingSession->SetInvalidCallback([this](const std::shared_ptr<SignalingSession>& session) {
-    OnSessionInvalid(session);
+      OnSessionDisconnect(session);
   });
 
   auto weakSession = signalingSession->weak_from_this();
 
   /// period check session health
-  worker_->ScheduleEvery([weakSession]() {
+  health_worker_->ScheduleEvery([weakSession]() {
     auto session = weakSession.lock();
     if (session) {
       if (!WhetherHealth(session)) {
+        /// 会执行 socket close，
+        /// 进而触发 disconnect 回调，从而移除 session
         session->Close();
         return false;
       } else {
@@ -92,7 +86,7 @@ void SignalingSessionManager::OnNewSession(std::weak_ptr<WebsocketSession> sessi
   sessions_.insert(signalingSession);
 }
 
-void SignalingSessionManager::OnSessionInvalid(const std::shared_ptr<SignalingSession>& session) {
+void SignalingSessionManager::OnSessionDisconnect(const std::shared_ptr<SignalingSession>& session) {
   WriteLock lk(set_mutex_);
   auto it = sessions_.find(session);
   if (it != sessions_.end()) {

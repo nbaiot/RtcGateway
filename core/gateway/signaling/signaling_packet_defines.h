@@ -7,13 +7,15 @@
 
 namespace nbaiot::rtc {
 
+#define MESSAGE "message"
+
 #define REQUEST "request"
 
 #define ACTION "action"
 
 #define TRANSACTION "transaction"
 
-#define DATA "data"
+#define BODY "body"
 
 #define CREATE_SESSION "create_session"
 
@@ -31,6 +33,7 @@ namespace nbaiot::rtc {
 
 #define LEAVE_ROOM "leave_room"
 
+#define SESSION_ID "session_id"
 
 #define SUCCESS "success"
 
@@ -39,6 +42,10 @@ namespace nbaiot::rtc {
 #define ERROR_CODE "error_code"
 
 #define CODE "code"
+
+
+#define SUCCESS_CODE 800
+#define INVALID_SESSION_CODE 801
 
 }
 

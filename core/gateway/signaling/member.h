@@ -21,11 +21,11 @@ public:
 
   std::string Uid();
 
+  uint64_t SessionId();
+
   void SetRoomId(uint32_t roomId);
 
   uint32_t RoomId();
-
-  void OnSessionInvalid();
 
 private:
   void OtherMemberJoinRoom(const std::shared_ptr<Member>& member,

@@ -7,6 +7,7 @@
 #include <glog/logging.h>
 
 #include "gateway/signaling/signaling_session_manager.h"
+#include "gateway/signaling/signaling_process_thread.h"
 
 namespace nbaiot::rtc {
 
@@ -19,6 +20,7 @@ RtcGateway::~RtcGateway() {
 }
 
 bool RtcGateway::Init(const YAML::Node& config) {
+  SignalingProcessThread::Instance()->Init(2);
   SignalingSessionManager::Instance()->Init("0.0.0.0", 9080);
   return true;
 }
