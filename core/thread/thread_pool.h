@@ -18,6 +18,8 @@ class ThreadPool {
 public:
   explicit ThreadPool(int count);
 
+  ThreadPool(std::shared_ptr<Scheduler> scheduler, int count);
+
   ~ThreadPool();
 
   void Start();

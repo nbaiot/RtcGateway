@@ -16,6 +16,13 @@ ThreadPool::ThreadPool(int count) {
   }
 }
 
+ThreadPool::ThreadPool(std::shared_ptr<Scheduler> scheduler, int count) : scheduler_(std::move(scheduler)) {
+  workers_.reserve(count);
+  for (int i = 0; i < count; ++i) {
+    workers_.push_back(std::make_shared<Worker>(scheduler_));
+  }
+}
+
 ThreadPool::~ThreadPool() {
   Stop();
 }
@@ -41,4 +48,5 @@ std::shared_ptr<Worker> ThreadPool::GetLessUsedWorker() {
   }
   return better;
 }
+
 }
