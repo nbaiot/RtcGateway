@@ -36,7 +36,7 @@ aux_source_directory(core/utils CORE_SRCS)
 # for libnice
 include_directories(/usr/include/glib-2.0/)
 include_directories(/usr/lib/x86_64-linux-gnu/glib-2.0/include/)
-set(NICE_LIB nice glib-2.0)
+set(NICE_LIB nice glib-2.0 gobject-2.0 gio-2.0)
 
 add_executable(RtcGateway
         ${CORE_SRCS}

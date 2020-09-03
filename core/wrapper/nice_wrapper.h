@@ -5,10 +5,28 @@
 #ifndef RTCGATEWAY_NICE_WRAPPER_H
 #define RTCGATEWAY_NICE_WRAPPER_H
 
+#include <memory>
+#include <thread>
+#include <boost/noncopyable.hpp>
+
+struct _NiceAgent;
+typedef struct _NiceAgent NiceAgent;
+
 namespace nbaiot::rtc {
-///https://blog.csdn.net/chenFteng/article/details/77429453
-///https://www.jianshu.com/p/ae071fc5d269
-class NiceWrapper {
+
+class NiceWrapper : public boost::noncopyable {
+
+public:
+  NiceWrapper();
+
+  explicit NiceWrapper(bool controlMode);
+
+  ~NiceWrapper();
+
+  void Test();
+
+private:
+  std::unique_ptr<NiceAgent, void(*)(void*)> agent_;
 
 };
 
