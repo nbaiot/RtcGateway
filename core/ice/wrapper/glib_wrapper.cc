@@ -5,7 +5,6 @@
 #include "glib_wrapper.h"
 
 #include <glib-2.0/glib.h>
-#include <glib-2.0/gio/gnetworking.h>
 
 namespace nbaiot::rtc {
 
@@ -26,7 +25,6 @@ GlibWrapper* GlibWrapper::Instance() {
 void GlibWrapper::StartMainLoop() {
   if (main_loop_started_)
     return;
-  g_networking_init();
   loop_thread_ = std::make_unique<std::thread>(g_main_loop_run, main_loop_.get());
   main_loop_started_ = true;
 }

@@ -9,8 +9,8 @@
 #include <nice/debug.h>
 
 
-#include "core/wrapper/glib_wrapper.h"
-#include "core/wrapper/nice_wrapper.h"
+#include "core/ice/wrapper/glib_wrapper.h"
+#include "core/ice/wrapper/nice_wrapper.h"
 
 
 #include "core/include/gateway_interface.h"

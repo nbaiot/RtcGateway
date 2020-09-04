@@ -29,7 +29,8 @@ aux_source_directory(core/thread CORE_SRCS)
 aux_source_directory(core/gateway CORE_SRCS)
 aux_source_directory(core/gateway/messenger CORE_SRCS)
 aux_source_directory(core/gateway/signaling CORE_SRCS)
-aux_source_directory(core/wrapper CORE_SRCS)
+aux_source_directory(core/ice CORE_SRCS)
+aux_source_directory(core/ice/wrapper CORE_SRCS)
 aux_source_directory(core/utils CORE_SRCS)
 
 

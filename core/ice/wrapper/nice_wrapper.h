@@ -5,6 +5,7 @@
 #ifndef RTCGATEWAY_NICE_WRAPPER_H
 #define RTCGATEWAY_NICE_WRAPPER_H
 
+#include <string>
 #include <memory>
 #include <thread>
 #include <boost/noncopyable.hpp>
@@ -14,6 +15,7 @@ typedef struct _NiceAgent NiceAgent;
 
 namespace nbaiot::rtc {
 
+/// https://libnice.freedesktop.org/libnice/NiceAgent.html
 class NiceWrapper : public boost::noncopyable {
 
 public:
@@ -22,6 +24,8 @@ public:
   explicit NiceWrapper(bool controlMode);
 
   ~NiceWrapper();
+
+//  std::string GetLocalSDP();
 
   void Test();
 
